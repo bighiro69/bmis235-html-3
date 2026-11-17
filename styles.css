@@ -57,3 +57,13 @@ footer {
     color: #777777;
     margin-top: 40px;
 }
+/* Video aspect ratios */
+.video-row {
+  display: flex;
+  gap: 4px; 
+} 
+
+.video-row video {
+  width: 50%; 
+  height: auto;
+}
