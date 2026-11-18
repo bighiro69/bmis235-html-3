@@ -43,7 +43,451 @@
      This box is empty on purpose. In Part 7 you paste an interactive
      graphic BETWEEN the opening <div> and the closing </div> below.
      ===================================================================== -->
-<div class="showcase"></div>
+<div class="showcase">
+  
+<!-- HTML: Interactive adventure ranking dashboard -->
+<div class="showcase">
+  <div class="adventure-widget">
+    <div class="adventure-header">
+      <div class="adventure-kicker">HIRO AKIN / ADVENTURE ARCHIVE</div>
+      <div class="adventure-heading">DANGER <span>INDEX.</span></div>
+      <div class="adventure-subtitle">Three adventures. Three different kinds of adrenaline.</div>
+    </div>
+
+    <div class="adventure-tabs" role="group" aria-label="Choose ranking category">
+      <button class="adventure-tab active" data-mode="scary" aria-pressed="true">Scariness</button>
+      <button class="adventure-tab" data-mode="difficulty" aria-pressed="false">Difficulty</button>
+      <button class="adventure-tab" data-mode="fun" aria-pressed="false">Fun Factor</button>
+    </div>
+
+    <div class="adventure-chart">
+      <div class="adventure-chart-top">
+        <span class="adventure-chart-title" id="adventure-category">SCARIEST ACTIVITIES</span>
+        <span class="adventure-chart-label">RANK #1 — HIGHEST</span>
+      </div>
+
+      <div class="adventure-bars" id="adventure-bars"></div>
+
+      <div class="adventure-scale">
+        <span>LOWER</span>
+        <span>HIGHER</span>
+      </div>
+    </div>
+
+    <div class="adventure-detail" id="adventure-detail" aria-live="polite">
+      <div class="adventure-detail-icon">?</div>
+      <div class="adventure-detail-content">
+        <div class="adventure-detail-title">PICK YOUR ADVENTURE</div>
+        <div class="adventure-detail-description">Select an activity to reveal more about it.</div>
+      </div>
+    </div>
+
+    <div class="adventure-bottom">
+      <span>PERSONAL EXPERIENCE LOG</span>
+      <span>01 — 03 / 2026</span>
+    </div>
+  </div>
+</div>
+
+<!-- CSS: Brand-colored styling, animations, and responsive design -->
+<style>
+.showcase .adventure-widget {
+  --main: #c9d1ff;
+  --accent: #3a4694;
+  --background: #101321;
+  --surface: #191e33;
+  --muted: #8991b5;
+
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 23px;
+  background: var(--background);
+  border: 1px solid #343d70;
+  border-radius: 12px;
+  color: var(--main);
+  font-family: Poppins, sans-serif;
+  overflow: hidden;
+}
+
+.showcase .adventure-widget * {
+  box-sizing: border-box;
+}
+
+.showcase .adventure-header {
+  margin-bottom: 20px;
+}
+
+.showcase .adventure-kicker {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: #8795ed;
+  margin-bottom: 7px;
+}
+
+.showcase .adventure-heading {
+  font-size: clamp(29px, 7vw, 43px);
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+
+.showcase .adventure-heading span {
+  color: #7485e9;
+}
+
+.showcase .adventure-subtitle {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.showcase .adventure-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 17px;
+}
+
+.showcase .adventure-tab {
+  flex: 1;
+  padding: 10px 5px;
+  border: 1px solid #343d70;
+  border-radius: 5px;
+  background: #1a1e32;
+  color: #a9b1dc;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
+}
+
+.showcase .adventure-tab:hover,
+.showcase .adventure-tab.active {
+  background: var(--accent);
+  border-color: #8292ff;
+  color: white;
+}
+
+.showcase .adventure-chart {
+  padding: 15px;
+  background: var(--surface);
+  border: 1px solid #303858;
+  border-radius: 7px;
+}
+
+.showcase .adventure-chart-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 19px;
+}
+
+.showcase .adventure-chart-title {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #b4c0ff;
+}
+
+.showcase .adventure-chart-label {
+  font-size: 8px;
+  color: var(--muted);
+  letter-spacing: .5px;
+  white-space: nowrap;
+}
+
+.showcase .adventure-bar-row {
+  display: grid;
+  grid-template-columns: 95px minmax(0, 1fr) 30px;
+  align-items: center;
+  gap: 10px;
+  margin: 17px 0;
+  cursor: pointer;
+  outline: none;
+}
+
+.showcase .adventure-bar-name {
+  font-size: 11px;
+  font-weight: 650;
+  color: var(--main);
+}
+
+.showcase .adventure-track {
+  height: 13px;
+  background: #303750;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.showcase .adventure-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #3a4694, #8798ff);
+  transition: width .5s ease;
+}
+
+.showcase .adventure-bar-row:hover .adventure-fill,
+.showcase .adventure-bar-row.selected .adventure-fill,
+.showcase .adventure-bar-row:focus-visible .adventure-fill {
+  background: linear-gradient(90deg, #5668c7, #c9d1ff);
+}
+
+.showcase .adventure-bar-row:focus-visible {
+  outline: 1px solid #aab6ff;
+  outline-offset: 5px;
+  border-radius: 2px;
+}
+
+.showcase .adventure-rank {
+  text-align: right;
+  color: #b5c1ff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.showcase .adventure-scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 9px;
+  border-top: 1px solid #303750;
+  color: #7781a7;
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+
+.showcase .adventure-detail {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 72px;
+  margin-top: 14px;
+  padding: 13px;
+  background: #202847;
+  border: 1px solid #3a4694;
+  border-radius: 6px;
+}
+
+.showcase .adventure-detail-icon {
+  display: grid;
+  flex-shrink: 0;
+  width: 39px;
+  height: 39px;
+  place-items: center;
+  background: #3a4694;
+  border-radius: 5px;
+  color: white;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.showcase .adventure-detail-title {
+  margin-bottom: 4px;
+  color: #c9d1ff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.showcase .adventure-detail-description {
+  color: #aeb8e0;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.showcase .adventure-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 15px;
+  color: #707b9f;
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 420px) {
+  .showcase .adventure-widget {
+    padding: 15px;
+  }
+
+  .showcase .adventure-bar-row {
+    grid-template-columns: 77px minmax(0, 1fr) 25px;
+    gap: 7px;
+  }
+
+  .showcase .adventure-tab {
+    font-size: 10px;
+  }
+
+  .showcase .adventure-chart {
+    padding: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase .adventure-fill,
+  .showcase .adventure-tab {
+    transition: none;
+  }
+}
+</style>
+
+<!-- JavaScript: Ranking logic, category switching, and activity selection -->
+<script>
+(function () {
+  const script = document.currentScript;
+  const root = script.parentElement;
+
+  if (!root) return;
+
+  const activities = [
+    {
+      name: "Hiking",
+      icon: "⛰",
+      description: "Exploring the outdoors, navigating trails, and pushing yourself through challenging terrain."
+    },
+    {
+      name: "Biking",
+      icon: "🚵",
+      description: "Taking on the trails with speed, balance, and technical skill. A combination of adrenaline and adventure."
+    },
+    {
+      name: "Cliffjumping",
+      icon: "🌊",
+      description: "Standing above the water, looking down, and committing to the jump. Sometimes the hardest part is taking that first leap."
+    }
+  ];
+
+  const rankings = {
+    scary: {
+      title: "SCARIEST ACTIVITIES",
+      values: { Hiking: 1, Biking: 2, Cliffjumping: 3 }
+    },
+    difficulty: {
+      title: "MOST DIFFICULT",
+      values: { Biking: 1, Hiking: 2, Cliffjumping: 3 }
+    },
+    fun: {
+      title: "MOST FUN",
+      values: { Biking: 1, Cliffjumping: 2, Hiking: 3 }
+    }
+  };
+
+  let currentMode = "scary";
+  let selectedActivity = null;
+
+  const bars = root.querySelector("#adventure-bars");
+  const categoryTitle = root.querySelector("#adventure-category");
+  const detail = root.querySelector("#adventure-detail");
+
+  function selectActivity(name) {
+    selectedActivity = name;
+    const activity = activities.find(item => item.name === name);
+
+    detail.innerHTML = "";
+
+    const icon = document.createElement("div");
+    icon.className = "adventure-detail-icon";
+    icon.textContent = activity.icon;
+
+    const content = document.createElement("div");
+    content.className = "adventure-detail-content";
+
+    const heading = document.createElement("div");
+    heading.className = "adventure-detail-title";
+    heading.textContent = activity.name.toUpperCase();
+
+    const description = document.createElement("div");
+    description.className = "adventure-detail-description";
+    description.textContent = activity.description;
+
+    content.append(heading, description);
+    detail.append(icon, content);
+
+    render();
+  }
+
+  function render() {
+    const ranking = rankings[currentMode];
+
+    categoryTitle.textContent = ranking.title;
+    bars.innerHTML = "";
+
+    const sorted = [...activities].sort(
+      (a, b) => ranking.values[a.name] - ranking.values[b.name]
+    );
+
+    sorted.forEach(activity => {
+      const rank = ranking.values[activity.name];
+
+      const row = document.createElement("div");
+      row.className = "adventure-bar-row";
+      row.tabIndex = 0;
+      row.setAttribute("role", "button");
+      row.setAttribute("aria-label", activity.name + ", rank " + rank);
+
+      if (selectedActivity === activity.name) {
+        row.classList.add("selected");
+        row.setAttribute("aria-pressed", "true");
+      } else {
+        row.setAttribute("aria-pressed", "false");
+      }
+
+      const name = document.createElement("span");
+      name.className = "adventure-bar-name";
+      name.textContent = activity.name;
+
+      const track = document.createElement("div");
+      track.className = "adventure-track";
+
+      const fill = document.createElement("div");
+      fill.className = "adventure-fill";
+      fill.style.width = ((4 - rank) / 3 * 100) + "%";
+
+      track.appendChild(fill);
+
+      const rankLabel = document.createElement("span");
+      rankLabel.className = "adventure-rank";
+      rankLabel.textContent = "#" + rank;
+
+      row.append(name, track, rankLabel);
+
+      row.addEventListener("click", () => selectActivity(activity.name));
+
+      row.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          selectActivity(activity.name);
+        }
+      });
+
+      bars.appendChild(row);
+    });
+
+    root.querySelectorAll(".adventure-tab").forEach(button => {
+      const active = button.dataset.mode === currentMode;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+  }
+
+  root.querySelectorAll(".adventure-tab").forEach(button => {
+    button.addEventListener("click", () => {
+      currentMode = button.dataset.mode;
+      render();
+    });
+  });
+
+  render();
+})();
+</script>
+
+</div>
 
 <!-- Footer: fill in your name -->
 <footer>Built by Hiro A &middot; BMIS 235</footer>
