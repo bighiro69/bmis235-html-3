@@ -57,13 +57,17 @@ footer {
     color: #777777;
     margin-top: 40px;
 }
-/* Video aspect ratios */
-.video-row {
+/*video aspect ratio*/
+.video-container {
   display: flex;
-  gap: 4px; 
-} 
+  justify-content: center; /* Centers horizontally */
+  align-items: center;     /* Centers vertically */
+  gap: 20px;               /* Adds space between the two videos */
+  min-height: 100vh;       /* Makes the container match the full screen height */
+  flex-wrap: wrap;         /* Stacks them automatically on small mobile screens */
+}
 
-.video-row video {
-  width: 50%; 
-  height: auto;
+video {
+  width: 45%;              /* Keeps both videos proportional */
+  max-width: 500px;
 }
