@@ -58,16 +58,23 @@ footer {
     margin-top: 40px;
 }
 /*video aspect ratio*/
+
 .video-container {
   display: flex;
-  justify-content: center; /* Centers horizontally */
-  align-items: center;     /* Centers vertically */
-  gap: 20px;               /* Adds space between the two videos */
-  min-height: 100vh;       /* Makes the container match the full screen height */
-  flex-wrap: wrap;         /* Stacks them automatically on small mobile screens */
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  width: 100%;
+  margin: 30px auto;
+  flex-wrap: nowrap;
 }
 
-video {
-  width: 45%;              /* Keeps both videos proportional */
+.video-container video {
+  display: block;
+  width: calc(50% - 12.5px);
   max-width: 500px;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  border-radius: 8px;
 }
